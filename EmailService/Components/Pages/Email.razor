@@ -1,0 +1,55 @@
+﻿@using System;
+@using System.Net;
+@using System.Net.Mail;
+@using System.Threading.Tasks;
+@using System.Diagnostics;
+@page "/emailsender"
+@rendermode InteractiveServer
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration // this reads the appsettings.json
+
+<h3>Email Sender</h3>
+
+<button @onclick="SendEmail1">Send Email</button>
+
+@code {
+    private async Task SendEmail1()
+    {
+        var to = Configuration["EmailSettings:To"];
+        var subject = "Test Email";
+        var body = "This is a test email.";
+
+        Debug.WriteLine("This is a test");
+
+        await SendEmailAsync(to, subject, body);
+    }
+
+    public async Task SendEmailAsync(string to, string subject, string body)
+    {
+        Debug.WriteLine("sending an emaail");
+        try
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(Configuration["EmailSettings:Email"], Configuration["EmailSettings:Password"]),
+                    EnableSsl = true,
+                };
+
+            var mailMessage = new MailMessage(Configuration["EmailSettings:Email"], to)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+                };
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+        catch (Exception ex)
+        {
+            // Handle exception, log, or throw
+            Debug.WriteLine($"Error sending email: {ex.Message}");
+            Console.WriteLine($"Error sending email: {ex.Message}");
+        }
+    }
+
+}

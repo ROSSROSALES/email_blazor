@@ -1,0 +1,16 @@
+# Ignore Visual Studio files
+.vscode/
+*.suo
+*.user
+*.sln
+.vs/
+
+# Ignore build output
+bin/
+obj/
+
+# Ignore environment-specific files
+appsettings*.json
+
+# Ignore user secrets
+*.csproj.user
