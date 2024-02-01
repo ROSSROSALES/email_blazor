@@ -1,4 +1,4 @@
-﻿@using System;
+@using System;
 @using System.Net;
 @using System.Net.Mail;
 @using System.Threading.Tasks;
@@ -25,7 +25,7 @@
 
     public async Task SendEmailAsync(string to, string subject, string body)
     {
-        Debug.WriteLine("sending an emaail");
+        Debug.WriteLine("sending an email");
         try
         {
             var smtpClient = new SmtpClient("smtp.gmail.com")
